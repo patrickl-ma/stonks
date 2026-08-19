@@ -1,0 +1,16 @@
+{
+  "name": "web",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^4.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
