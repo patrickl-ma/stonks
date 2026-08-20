@@ -9,12 +9,15 @@ pnpm install
 Dev commands:
 
 ```bash
-# Start API only
-pnpm --filter packages/api dev
+# Start Fastify backend only
+pnpm --filter api dev
 
-# Start web only
-pnpm --filter apps/web dev
+# Start marketing only
+pnpm --filter marketing dev
 
-# Start both (requires `concurrently`)
+# Start Vite React app only
+pnpm --filter spa dev
+
+# Start all three packages (requires `concurrently`)
 pnpm dev
 ```

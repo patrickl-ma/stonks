@@ -3,15 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ],
   "scripts": {
-    "dev:web": "pnpm --filter apps/web dev",
-    "dev:api": "pnpm --filter packages/api dev",
-    "dev": "concurrently \"pnpm --filter packages/api dev\" \"pnpm --filter apps/web dev\"",
-    "build": "pnpm -w -r run build",
-    "start:api": "node packages/api/dist/index.js"
+    "dev:marketing": "pnpm --filter marketing dev",
+    "dev:spa": "pnpm --filter spa dev",
+    "dev:api": "pnpm --filter api dev",
+    "dev": "concurrently \"pnpm --filter marketing dev\" \"pnpm --filter spa dev\" \"pnpm --filter api dev\"",
+    "build": "pnpm -r --if-present run build",
+    "start:api": "node apps/api/dist/index.js"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"

@@ -8,19 +8,25 @@ Install dependencies at the repo root:
 pnpm install
 ```
 
-Start the Fastify API (available at http://localhost:3001):
+Start the Fastify backend (available at http://localhost:3001):
 
 ```bash
-pnpm --filter ./packages/api dev
+pnpm --filter api dev
 ```
 
-Start the Astro web app (available at http://localhost:4321):
+Start the Astro marketing app (available at http://localhost:4321):
 
 ```bash
-pnpm --filter ./apps/web dev
+pnpm --filter marketing dev
 ```
 
-Start both concurrently (requires `concurrently`):
+Start the Vite React app (available at http://localhost:5173):
+
+```bash
+pnpm --filter spa dev
+```
+
+Start all three packages concurrently (requires `concurrently`):
 
 ```bash
 pnpm dev
