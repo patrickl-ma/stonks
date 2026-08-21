@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1787265859508,
+      "tag": "0000_solid_jane_foster",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1787265910351,
+      "tag": "0001_material_talon",
+      "breakpoints": true
+    }
+  ]
+}

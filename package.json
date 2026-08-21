@@ -3,12 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
     "dev:marketing": "pnpm --filter marketing dev",
     "dev:spa": "pnpm --filter spa dev",
     "dev:api": "pnpm --filter api dev",
+    "db:up": "docker compose up -d postgres",
+    "db:migrate": "pnpm --filter @stonks/db db:migrate",
+    "db:studio": "pnpm --filter @stonks/db db:studio",
     "dev": "concurrently \"pnpm --filter marketing dev\" \"pnpm --filter spa dev\" \"pnpm --filter api dev\"",
     "build": "pnpm -r --if-present run build",
     "start:api": "node apps/api/dist/index.js"

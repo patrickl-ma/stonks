@@ -1,19 +1,22 @@
-import Fastify from 'fastify';
-
-const port = Number(process.env.PORT ?? 3001);
-const server = Fastify({ logger: true });
-
-server.get('/health', async () => ({ status: 'ok' }));
-server.get('/', async () => ({ message: 'Hello from Fastify API' }));
+import { buildServer } from './server.js'
 
 const start = async () => {
-  try {
-    await server.listen({ port, host: '0.0.0.0' });
-    console.log(`API listening at http://localhost:${port}`);
-  } catch (err) {
-    server.log.error(err);
-    process.exit(1);
-  }
-};
+  let server: Awaited<ReturnType<typeof buildServer>> | undefined
 
-start();
+  try {
+    server = await buildServer()
+    const { PORT: port } = server.config
+
+    await server.listen({ port, host: '0.0.0.0' })
+    console.log(`API listening at http://localhost:${port}`)
+  } catch (err) {
+    if (server) {
+      server.log.error(err)
+    } else {
+      console.error(err)
+    }
+    process.exit(1)
+  }
+}
+
+void start()
