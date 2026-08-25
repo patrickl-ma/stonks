@@ -67,8 +67,8 @@ export const verification = pgTable("verification", {
 });
 
 export const authSchema = { user, session, account, verification };
-  
-export const ca_event_base= {
+
+export const ca_event_base = {
   description:
     'Common fields present on every `ca` payload regardless of `event_type`.\nNot meant to be referenced directly by clients -- it exists so each\nper-type payload schema (`ca_event_cash_dividend`, `ca_event_forward_split`,\n...) can `allOf`-compose it instead of restating `id` and `process_date`.\nThis makes the "always present" invariant structural (guaranteed by the\nschema) rather than emergent from repetition, and matches the "Common `ca`\nfields" section of the event-streaming Corporate Actions SSE design doc.\n',
   properties: {
@@ -79,7 +79,7 @@ export const ca_event_base= {
   type: "object",
 };
 
-export const ca_event_cash_dividend= {
+export const ca_event_cash_dividend = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -135,7 +135,7 @@ export const ca_event_cash_dividend= {
     "Cash dividend payload delivered when\n`event_type == cash_dividend_corporateaction_event`. Corresponds to\n`cash_dividends` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_cash_merger= {
+export const ca_event_cash_merger = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -146,8 +146,7 @@ export const ca_event_cash_merger= {
         },
         acquiree_isin: { $ref: "#/components/schemas/isin" },
         acquiree_symbol: {
-          description:
-            "Ticker being bought (will disappear after the merger).",
+          description: "Ticker being bought (will disappear after the merger).",
           type: "string",
         },
         acquirer_cusip: {
@@ -171,12 +170,7 @@ export const ca_event_cash_merger= {
           type: "string",
         },
       },
-      required: [
-        "acquiree_symbol",
-        "acquiree_cusip",
-        "rate",
-        "effective_date",
-      ],
+      required: ["acquiree_symbol", "acquiree_cusip", "rate", "effective_date"],
       type: "object",
     },
   ],
@@ -184,7 +178,7 @@ export const ca_event_cash_merger= {
     "Cash merger payload delivered when\n`event_type == cash_merger_corporateaction_event`. Corresponds to\n`cash_mergers` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_equity_partial_call= {
+export const ca_event_equity_partial_call = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -236,7 +230,7 @@ export const ca_event_equity_partial_call= {
     "Partial redemption of an equity issue where the issuer calls back only a\nfraction of outstanding shares -- typically allocated to holders via a\nlottery. Delivered when\n`event_type == equity_partial_call_corporateaction_event`. Corresponds to\n`partial_calls` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_forward_split= {
+export const ca_event_forward_split = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -276,7 +270,7 @@ export const ca_event_forward_split= {
     "Forward stock split payload delivered when\n`event_type == forward_split_corporateaction_event`. Corresponds to\n`forward_splits` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_name_change= {
+export const ca_event_name_change = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -309,7 +303,7 @@ export const ca_event_name_change= {
     "Name/ticker change payload delivered when\n`event_type == name_change_corporateaction_event`. Corresponds to\n`name_changes` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response.\n",
 };
 
-export const ca_event_redemption= {
+export const ca_event_redemption = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -339,7 +333,7 @@ export const ca_event_redemption= {
     "Full redemption payload delivered when\n`event_type == redemption_corporateaction_event`. Corresponds to\n`redemptions` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_reorganization= {
+export const ca_event_reorganization = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -380,7 +374,7 @@ export const ca_event_reorganization= {
     "General-purpose corporate restructuring (e.g. Chapter 11 emergence) where\nexisting holders receive a mix of cash and/or one or more replacement\nsecurities. Each entry in `stock_movements` describes a separate\nshare-class distribution. Delivered when\n`event_type == reorganization_corporateaction_event`. Corresponds to\n`reorganizations` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_reorganization_stock_movement= {
+export const ca_event_reorganization_stock_movement = {
   additionalProperties: false,
   description:
     "A single replacement-security leg of a\n[`ca_event_reorganization`](#/components/schemas/ca_event_reorganization)\npayload. All decimal fields are emitted as JSON strings to preserve\nprecision on the wire.\n",
@@ -405,7 +399,7 @@ export const ca_event_reorganization_stock_movement= {
   type: "object",
 };
 
-export const ca_event_reverse_split= {
+export const ca_event_reverse_split = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -459,7 +453,7 @@ export const ca_event_reverse_split= {
     "Reverse stock split payload delivered when\n`event_type == reverse_split_corporateaction_event`. Corresponds to\n`reverse_splits` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_rights_distribution= {
+export const ca_event_rights_distribution = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -511,7 +505,7 @@ export const ca_event_rights_distribution= {
     "Rights distribution payload delivered when\n`event_type == rights_distribution_corporateaction_event`. Corresponds to\n`rights_distributions` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_spin_off= {
+export const ca_event_spin_off = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -570,7 +564,7 @@ export const ca_event_spin_off= {
     "Spin-off payload delivered when\n`event_type == spin_off_corporateaction_event`. Corresponds to\n`spin_offs` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_stock_and_cash_merger= {
+export const ca_event_stock_and_cash_merger = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -633,7 +627,7 @@ export const ca_event_stock_and_cash_merger= {
     "Merger paying a mix of stock and cash. Delivered when\n`event_type == stock_and_cash_merger_corporateaction_event`. Corresponds\nto `stock_and_cash_mergers` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_stock_dividend= {
+export const ca_event_stock_dividend = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -666,7 +660,7 @@ export const ca_event_stock_dividend= {
     "Stock dividend payload delivered when\n`event_type == stock_dividend_corporateaction_event`. Corresponds to\n`stock_dividends` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_stock_merger= {
+export const ca_event_stock_merger = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -721,7 +715,7 @@ export const ca_event_stock_merger= {
     "All-stock merger payload delivered when\n`event_type == stock_merger_corporateaction_event`. Corresponds to\n`stock_mergers` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_unit_split= {
+export const ca_event_unit_split = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -757,8 +751,7 @@ export const ca_event_unit_split= {
           type: "string",
         },
         new_symbol: {
-          description:
-            "Ticker of the primary leg (usually the common share).",
+          description: "Ticker of the primary leg (usually the common share).",
           type: "string",
         },
         old_cusip: {
@@ -796,7 +789,7 @@ export const ca_event_unit_split= {
     "Unit split payload delivered when\n`event_type == unit_split_corporateaction_event`. Corresponds to\n`unit_splits` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response, but\nevery decimal field is emitted as a JSON string to preserve precision on\nthe wire.\n",
 };
 
-export const ca_event_worthless_removal= {
+export const ca_event_worthless_removal = {
   allOf: [
     { $ref: "#/components/schemas/ca_event_base" },
     {
@@ -820,13 +813,13 @@ export const ca_event_worthless_removal= {
     "Worthless removal payload delivered when\n`event_type == worthless_removal_corporateaction_event`. Corresponds to\n`worthless_removals` on the REST\n[`GET /v1/corporate-actions`](#operation/CorporateActions) response.\n",
 };
 
-export const ca_id= {
+export const ca_id = {
   description: "The internal Alpaca identifier of the corporate action.",
   format: "uuid",
   type: "string",
 };
 
-export const cash_dividend= {
+export const cash_dividend = {
   description: "Cash dividend.",
   examples: [
     {
@@ -876,7 +869,7 @@ export const cash_dividend= {
   type: "object",
 };
 
-export const cash_merger= {
+export const cash_merger = {
   description: "Cash merger.",
   examples: [
     {
@@ -914,7 +907,7 @@ export const cash_merger= {
   type: "object",
 };
 
-export const corporate_action_event= {
+export const corporate_action_event = {
   description:
     "A single corporate-action mutation delivered over the\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n\nEvery event uses the same envelope. The `event_type` field selects which of\nthe 15 per-type schemas populates `ca`; see\n[`corporate_action_event_type`](#/components/schemas/corporate_action_event_type)\nfor the full mapping and follow the link on each row to the per-type `ca`\npayload schema.\n\nOptional fields (including `currency` and, on most CA types, `isin`) are\nomitted from the JSON when empty; `null` is never emitted.\n",
   discriminator: {
@@ -991,14 +984,14 @@ export const corporate_action_event= {
   ],
 };
 
-export const corporate_action_event_action= {
+export const corporate_action_event_action = {
   description:
     "Kind of mutation that produced this event on the upstream corporate actions\nstore:\n\n- `insert`: a new corporate action was created.\n- `update`: an existing corporate action was modified (e.g. a date or rate\n  correction). `ca.id` matches the original event.\n- `delete`: a previously published corporate action was removed. `ca.id`\n  matches the original event; subsequent events for the same id (if any)\n  will be new inserts.\n",
   enum: ["insert", "update", "delete"],
   type: "string",
 };
 
-export const corporate_action_event_base= {
+export const corporate_action_event_base = {
   description:
     "Common envelope fields shared by every variant of\n[`corporate_action_event`](#/components/schemas/corporate_action_event).\nThis schema is not meant to be used directly by clients -- it exists so each\nper-`event_type` `oneOf` branch can `allOf`-compose the envelope basics\n(`event_id`, `at`, `action`, `region`) alongside its narrowed `event_type` /\n`ca` pair. Keeping these in one place is what makes the envelope's\n`discriminator` play nicely with strict OpenAPI validators.\n",
   properties: {
@@ -1021,7 +1014,7 @@ export const corporate_action_event_base= {
   type: "object",
 };
 
-export const corporate_action_event_cash_dividend= {
+export const corporate_action_event_cash_dividend = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1040,7 +1033,7 @@ export const corporate_action_event_cash_dividend= {
     "`corporate_action_event` envelope specialised to `event_type ==\ncash_dividend_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_cash_merger= {
+export const corporate_action_event_cash_merger = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1059,7 +1052,7 @@ export const corporate_action_event_cash_merger= {
     "`corporate_action_event` envelope specialised to `event_type ==\ncash_merger_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_equity_partial_call= {
+export const corporate_action_event_equity_partial_call = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1080,7 +1073,7 @@ export const corporate_action_event_equity_partial_call= {
     "`corporate_action_event` envelope specialised to `event_type ==\nequity_partial_call_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_forward_split= {
+export const corporate_action_event_forward_split = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1099,7 +1092,7 @@ export const corporate_action_event_forward_split= {
     "`corporate_action_event` envelope specialised to `event_type ==\nforward_split_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_name_change= {
+export const corporate_action_event_name_change = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1118,7 +1111,7 @@ export const corporate_action_event_name_change= {
     "`corporate_action_event` envelope specialised to `event_type ==\nname_change_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_redemption= {
+export const corporate_action_event_redemption = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1137,14 +1130,14 @@ export const corporate_action_event_redemption= {
     "`corporate_action_event` envelope specialised to `event_type ==\nredemption_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_region= {
+export const corporate_action_event_region = {
   description:
     "Envelope-level classification derived from `metadata.global` on the upstream\ncorporate-action record. This is the only field the SSE `region` filter\ninspects on each event.\n\n- `us`: US-listed / US-regulated corporate action.\n- `non_us`: everything else.\n",
   enum: ["us", "non_us"],
   type: "string",
 };
 
-export const corporate_action_event_reorganization= {
+export const corporate_action_event_reorganization = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1163,7 +1156,7 @@ export const corporate_action_event_reorganization= {
     "`corporate_action_event` envelope specialised to `event_type ==\nreorganization_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_reverse_split= {
+export const corporate_action_event_reverse_split = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1182,7 +1175,7 @@ export const corporate_action_event_reverse_split= {
     "`corporate_action_event` envelope specialised to `event_type ==\nreverse_split_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_rights_distribution= {
+export const corporate_action_event_rights_distribution = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1203,7 +1196,7 @@ export const corporate_action_event_rights_distribution= {
     "`corporate_action_event` envelope specialised to `event_type ==\nrights_distribution_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_spin_off= {
+export const corporate_action_event_spin_off = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1222,7 +1215,7 @@ export const corporate_action_event_spin_off= {
     "`corporate_action_event` envelope specialised to `event_type ==\nspin_off_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_stock_and_cash_merger= {
+export const corporate_action_event_stock_and_cash_merger = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1243,7 +1236,7 @@ export const corporate_action_event_stock_and_cash_merger= {
     "`corporate_action_event` envelope specialised to `event_type ==\nstock_and_cash_merger_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_stock_dividend= {
+export const corporate_action_event_stock_dividend = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1262,7 +1255,7 @@ export const corporate_action_event_stock_dividend= {
     "`corporate_action_event` envelope specialised to `event_type ==\nstock_dividend_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_stock_merger= {
+export const corporate_action_event_stock_merger = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1281,7 +1274,7 @@ export const corporate_action_event_stock_merger= {
     "`corporate_action_event` envelope specialised to `event_type ==\nstock_merger_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_type= {
+export const corporate_action_event_type = {
   description:
     "Discriminator that determines the shape of the `ca` field on a\n[`corporate_action_event`](#/components/schemas/corporate_action_event).\n\nEach value corresponds to a per-type payload schema:\n\n| `event_type` | `ca` schema |\n| --- | --- |\n| `cash_dividend_corporateaction_event` | [`ca_event_cash_dividend`](#/components/schemas/ca_event_cash_dividend) |\n| `cash_merger_corporateaction_event` | [`ca_event_cash_merger`](#/components/schemas/ca_event_cash_merger) |\n| `equity_partial_call_corporateaction_event` | [`ca_event_equity_partial_call`](#/components/schemas/ca_event_equity_partial_call) |\n| `forward_split_corporateaction_event` | [`ca_event_forward_split`](#/components/schemas/ca_event_forward_split) |\n| `name_change_corporateaction_event` | [`ca_event_name_change`](#/components/schemas/ca_event_name_change) |\n| `redemption_corporateaction_event` | [`ca_event_redemption`](#/components/schemas/ca_event_redemption) |\n| `reorganization_corporateaction_event` | [`ca_event_reorganization`](#/components/schemas/ca_event_reorganization) |\n| `reverse_split_corporateaction_event` | [`ca_event_reverse_split`](#/components/schemas/ca_event_reverse_split) |\n| `rights_distribution_corporateaction_event` | [`ca_event_rights_distribution`](#/components/schemas/ca_event_rights_distribution) |\n| `spin_off_corporateaction_event` | [`ca_event_spin_off`](#/components/schemas/ca_event_spin_off) |\n| `stock_and_cash_merger_corporateaction_event` | [`ca_event_stock_and_cash_merger`](#/components/schemas/ca_event_stock_and_cash_merger) |\n| `stock_dividend_corporateaction_event` | [`ca_event_stock_dividend`](#/components/schemas/ca_event_stock_dividend) |\n| `stock_merger_corporateaction_event` | [`ca_event_stock_merger`](#/components/schemas/ca_event_stock_merger) |\n| `unit_split_corporateaction_event` | [`ca_event_unit_split`](#/components/schemas/ca_event_unit_split) |\n| `worthless_removal_corporateaction_event` | [`ca_event_worthless_removal`](#/components/schemas/ca_event_worthless_removal) |\n",
   enum: [
@@ -1304,7 +1297,7 @@ export const corporate_action_event_type= {
   type: "string",
 };
 
-export const corporate_action_event_unit_split= {
+export const corporate_action_event_unit_split = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1323,7 +1316,7 @@ export const corporate_action_event_unit_split= {
     "`corporate_action_event` envelope specialised to `event_type ==\nunit_split_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_action_event_worthless_removal= {
+export const corporate_action_event_worthless_removal = {
   allOf: [
     { $ref: "#/components/schemas/corporate_action_event_base" },
     {
@@ -1344,7 +1337,7 @@ export const corporate_action_event_worthless_removal= {
     "`corporate_action_event` envelope specialised to `event_type ==\nworthless_removal_corporateaction_event`. Emitted through\n[Corporate Actions Events Stream](#operation/SubscribeToCorporateActionsEventsSSE).\n",
 };
 
-export const corporate_actions= {
+export const corporate_actions = {
   properties: {
     cash_dividends: {
       items: { $ref: "#/components/schemas/cash_dividend" },
@@ -1410,7 +1403,7 @@ export const corporate_actions= {
   type: "object",
 };
 
-export const corporate_actions_resp= {
+export const corporate_actions_resp = {
   properties: {
     corporate_actions: {
       $ref: "#/components/schemas/corporate_actions",
@@ -1421,7 +1414,7 @@ export const corporate_actions_resp= {
   type: "object",
 };
 
-export const crypto_bar= {
+export const crypto_bar = {
   description: "OHLC aggregate of all the trades in a given interval.",
   examples: [
     {
@@ -1477,7 +1470,7 @@ export const crypto_bar= {
   type: "object",
 };
 
-export const crypto_bars_resp= {
+export const crypto_bars_resp = {
   properties: {
     bars: {
       additionalProperties: {
@@ -1492,14 +1485,14 @@ export const crypto_bars_resp= {
   type: "object",
 };
 
-export const crypto_historical_loc= {
+export const crypto_historical_loc = {
   description:
     "Crypto location from where the historical market data is retrieved.",
   enum: ["us", "us-1", "us-2", "eu-1", "bs-1"],
   type: "string",
 };
 
-export const crypto_latest_bars_resp= {
+export const crypto_latest_bars_resp = {
   properties: {
     bars: {
       additionalProperties: {
@@ -1512,14 +1505,14 @@ export const crypto_latest_bars_resp= {
   type: "object",
 };
 
-export const crypto_latest_loc= {
+export const crypto_latest_loc = {
   description:
     "Crypto location from where the latest market data is retrieved.",
   enum: ["us", "us-1", "us-2", "eu-1", "bs-1"],
   type: "string",
 };
 
-export const crypto_latest_orderbooks_resp= {
+export const crypto_latest_orderbooks_resp = {
   properties: {
     orderbooks: {
       additionalProperties: {
@@ -1532,7 +1525,7 @@ export const crypto_latest_orderbooks_resp= {
   type: "object",
 };
 
-export const crypto_latest_quotes_resp= {
+export const crypto_latest_quotes_resp = {
   properties: {
     quotes: {
       additionalProperties: {
@@ -1545,7 +1538,7 @@ export const crypto_latest_quotes_resp= {
   type: "object",
 };
 
-export const crypto_latest_trades_resp= {
+export const crypto_latest_trades_resp = {
   properties: {
     trades: {
       additionalProperties: {
@@ -1558,7 +1551,7 @@ export const crypto_latest_trades_resp= {
   type: "object",
 };
 
-export const crypto_orderbook= {
+export const crypto_orderbook = {
   description: "Snapshot of the orderbook.",
   examples: [
     {
@@ -1588,7 +1581,7 @@ export const crypto_orderbook= {
   type: "object",
 };
 
-export const crypto_orderbook_entry= {
+export const crypto_orderbook_entry = {
   description: "A single entry in a crypto orderbook.",
   examples: [{ p: 20846, s: 0.1902 }],
   properties: {
@@ -1603,7 +1596,7 @@ export const crypto_orderbook_entry= {
   type: "object",
 };
 
-export const crypto_quote= {
+export const crypto_quote = {
   description: "The best bid and ask information for a given security.",
   examples: [
     {
@@ -1641,7 +1634,7 @@ export const crypto_quote= {
   type: "object",
 };
 
-export const crypto_quotes_resp= {
+export const crypto_quotes_resp = {
   properties: {
     next_page_token: { $ref: "#/components/schemas/next_page_token" },
     quotes: {
@@ -1656,7 +1649,7 @@ export const crypto_quotes_resp= {
   type: "object",
 };
 
-export const crypto_snapshot= {
+export const crypto_snapshot = {
   description:
     "A snapshot provides the latest trade, latest quote, latest minute bar, latest daily bar and previous daily bar.\n",
   properties: {
@@ -1669,7 +1662,7 @@ export const crypto_snapshot= {
   type: "object",
 };
 
-export const crypto_snapshots_resp= {
+export const crypto_snapshots_resp = {
   properties: {
     snapshots: {
       additionalProperties: {
@@ -1682,7 +1675,7 @@ export const crypto_snapshots_resp= {
   type: "object",
 };
 
-export const crypto_trade= {
+export const crypto_trade = {
   description: "A crypto trade.",
   examples: [
     {
@@ -1719,7 +1712,7 @@ export const crypto_trade= {
   type: "object",
 };
 
-export const crypto_trades_resp= {
+export const crypto_trades_resp = {
   properties: {
     next_page_token: { $ref: "#/components/schemas/next_page_token" },
     trades: {
@@ -1734,13 +1727,13 @@ export const crypto_trades_resp= {
   type: "object",
 };
 
-export const currency= {
+export const currency = {
   description:
     "The ISO 4217 currency code associated with the corporate action.\nEmpty value can mean USD, non-applicable (e.g. for name changes) or unknown\n(can change later to a valid currency).\n",
   type: "string",
 };
 
-export const data_quality= {
+export const data_quality = {
   default: "complete",
   description:
     "Controls which corporate actions are returned based on data quality.\n\n- `complete` (default): exclude corporate actions that are still missing required\n  fields (for example, ex-date or CUSIP/ISIN) and have not yet been processed.\n  Already-processed corporate actions are always included, even if they would\n  otherwise be considered incomplete.\n- `all`: return matching corporate actions regardless of field completeness.\n",
@@ -1748,26 +1741,26 @@ export const data_quality= {
   type: "string",
 };
 
-export const date= {
+export const date = {
   description: "Date in RFC-3339.",
   format: "date",
   type: "string",
 };
 
-export const due_bill_redemption_date= {
+export const due_bill_redemption_date = {
   description: "The date when due bill obligations are redeemed.",
   format: "date",
   type: "string",
 };
 
-export const effective_date= {
+export const effective_date = {
   description:
     "The effective date marks the cutoff point for shareholders to be credited.",
   format: "date",
   type: "string",
 };
 
-export const event_id= {
+export const event_id = {
   description:
     "Lexically sortable, monotonically increasing 26-character\n[ULID](https://github.com/ulid/spec) (Crockford Base32, uppercase) that\nidentifies a single SSE emission. Unique per message -- an `update` or\n`delete` for the same underlying corporate action carries a fresh\n`event_id`. Because ULIDs sort in emission order, they can be used as\nresume cursors via `since_id`, `until_id`, or the standard `Last-Event-Id`\nreconnect header.\n",
   examples: ["01J9RPMV5TKB8WX3M4F1KZ7QH2"],
@@ -1776,16 +1769,16 @@ export const event_id= {
   type: "string",
 };
 
-export const ex_date= {
+export const ex_date = {
   description:
     "The ex-date marks the cutoff point for shareholders to be credited.",
   format: "date",
   type: "string",
 };
 
-export const expiration_date= { format: "date", type: "string" };
+export const expiration_date = { format: "date", type: "string" };
 
-export const fixed_income_latest_prices_resp= {
+export const fixed_income_latest_prices_resp = {
   properties: {
     prices: {
       additionalProperties: {
@@ -1798,7 +1791,7 @@ export const fixed_income_latest_prices_resp= {
   type: "object",
 };
 
-export const fixed_income_latest_quotes_resp= {
+export const fixed_income_latest_quotes_resp = {
   properties: {
     quotes: {
       additionalProperties: {
@@ -1811,9 +1804,8 @@ export const fixed_income_latest_quotes_resp= {
   type: "object",
 };
 
-export const fixed_income_price= {
-  description:
-    "The price of the instrument as a percentage of its par value.",
+export const fixed_income_price = {
+  description: "The price of the instrument as a percentage of its par value.",
   examples: [
     {
       p: 99.6459,
@@ -1840,7 +1832,7 @@ export const fixed_income_price= {
   type: "object",
 };
 
-export const fixed_income_quote= {
+export const fixed_income_quote = {
   description:
     "The best bid and ask information for a given fixed income security. A value of 0 means there is no active bid or ask for that field.\n",
   examples: [
@@ -1929,13 +1921,13 @@ export const fixed_income_quote= {
   type: "object",
 };
 
-export const forex_currency_pairs= {
+export const forex_currency_pairs = {
   description: "A comma-separated string with currency pairs.",
   examples: ["USDJPY", "USDMXN"],
   type: "string",
 };
 
-export const forex_latest_rates_resp= {
+export const forex_latest_rates_resp = {
   description: "The response object of the latest forex rates.",
   properties: {
     rates: {
@@ -1949,7 +1941,7 @@ export const forex_latest_rates_resp= {
   type: "object",
 };
 
-export const forex_rate= {
+export const forex_rate = {
   description:
     "A foreign exchange rate between two currencies at a given time.",
   examples: [
@@ -1989,7 +1981,7 @@ export const forex_rate= {
   type: "object",
 };
 
-export const forex_rates_resp= {
+export const forex_rates_resp = {
   properties: {
     next_page_token: { $ref: "#/components/schemas/next_page_token" },
     rates: {
@@ -2004,14 +1996,14 @@ export const forex_rates_resp= {
   type: "object",
 };
 
-export const forex_timeframe= {
+export const forex_timeframe = {
   default: "1Min",
   description:
     "The sampling interval of the currency rates. For example, 5S returns forex rates sampled every five seconds.\nYou can use the following values:\n - `5Sec` or `5S`\n - `1Min` or `1T`\n - `1Day` or `1D`\n",
   type: "string",
 };
 
-export const forward_split= {
+export const forward_split = {
   description: "Forward split.",
   examples: [
     {
@@ -2055,19 +2047,19 @@ export const forward_split= {
   type: "object",
 };
 
-export const isin= {
+export const isin = {
   description:
     "International Securities Identification Number (ISIN) as defined by ISO 6166.\nMay be empty for US corporate actions.\n",
   type: "string",
 };
 
-export const market_type= {
+export const market_type = {
   description: "Market type (stocks or crypto).",
   enum: ["stocks", "crypto"],
   type: "string",
 };
 
-export const most_active= {
+export const most_active = {
   description: "A stock that is most active by either volume or trade count.",
   examples: [{ symbol: "AAPL", trade_count: 639626, volume: 122709184 }],
   properties: {
@@ -2087,7 +2079,7 @@ export const most_active= {
   type: "object",
 };
 
-export const most_actives_resp= {
+export const most_actives_resp = {
   properties: {
     last_updated: {
       description:
@@ -2104,7 +2096,7 @@ export const most_actives_resp= {
   type: "object",
 };
 
-export const mover= {
+export const mover = {
   description: "A symbol whose price moved significantly.",
   examples: [
     {
@@ -2140,7 +2132,7 @@ export const mover= {
   type: "object",
 };
 
-export const movers_resp= {
+export const movers_resp = {
   description: "Contains list of market movers.",
   properties: {
     gainers: {
@@ -2164,7 +2156,7 @@ export const movers_resp= {
   type: "object",
 };
 
-export const name_change= {
+export const name_change = {
   description: "Name change.",
   examples: [
     {
@@ -2198,7 +2190,7 @@ export const name_change= {
   type: "object",
 };
 
-export const news= {
+export const news = {
   description: "Model representing a news article.",
   properties: {
     author: {
@@ -2275,7 +2267,7 @@ export const news= {
   type: "object",
 };
 
-export const news_image= {
+export const news_image = {
   description:
     "A model representing images for a news article. Simply a URL to the image along with a size parameter suggesting the display size of the image.",
   properties: {
@@ -2297,7 +2289,7 @@ export const news_image= {
   type: "object",
 };
 
-export const news_resp= {
+export const news_resp = {
   properties: {
     news: {
       items: { $ref: "#/components/schemas/news" },
@@ -2309,12 +2301,12 @@ export const news_resp= {
   type: "object",
 };
 
-export const next_page_token= {
+export const next_page_token = {
   description: "Pagination token for the next page.",
   type: ["string", "null"],
 };
 
-export const option_bar= {
+export const option_bar = {
   description: "OHLC aggregate of all the trades in a given interval.",
   examples: [
     {
@@ -2370,7 +2362,7 @@ export const option_bar= {
   type: "object",
 };
 
-export const option_bars_resp= {
+export const option_bars_resp = {
   properties: {
     bars: {
       additionalProperties: {
@@ -2386,7 +2378,7 @@ export const option_bars_resp= {
   type: "object",
 };
 
-export const option_conditions= {
+export const option_conditions = {
   additionalProperties: { type: "string" },
   examples: [
     {
@@ -2398,19 +2390,19 @@ export const option_conditions= {
   type: "object",
 };
 
-export const option_exchanges= {
+export const option_exchanges = {
   additionalProperties: { type: "string" },
   examples: [{ A: "NYSE American Options", Q: "Nasdaq Options" }],
   type: "object",
 };
 
-export const option_feed= {
+export const option_feed = {
   default: "opra",
   enum: ["opra", "indicative"],
   type: "string",
 };
 
-export const option_greeks= {
+export const option_greeks = {
   description:
     "The greeks for the contract calculated using the Black-Scholes model.",
   properties: {
@@ -2424,7 +2416,7 @@ export const option_greeks= {
   type: "object",
 };
 
-export const option_latest_quotes_resp= {
+export const option_latest_quotes_resp = {
   properties: {
     quotes: {
       additionalProperties: {
@@ -2437,7 +2429,7 @@ export const option_latest_quotes_resp= {
   type: "object",
 };
 
-export const option_latest_trades_resp= {
+export const option_latest_trades_resp = {
   properties: {
     trades: {
       additionalProperties: {
@@ -2450,7 +2442,7 @@ export const option_latest_trades_resp= {
   type: "object",
 };
 
-export const option_quote= {
+export const option_quote = {
   description: "The best bid and ask information for a given option.\n",
   examples: [
     {
@@ -2494,7 +2486,7 @@ export const option_quote= {
   type: "object",
 };
 
-export const option_snapshot= {
+export const option_snapshot = {
   description: "A snapshot provides the latest trade and latest quote.",
   properties: {
     dailyBar: { $ref: "#/components/schemas/option_bar" },
@@ -2513,7 +2505,7 @@ export const option_snapshot= {
   type: "object",
 };
 
-export const option_snapshots_resp= {
+export const option_snapshots_resp = {
   properties: {
     next_page_token: { $ref: "#/components/schemas/next_page_token" },
     snapshots: {
@@ -2527,7 +2519,7 @@ export const option_snapshots_resp= {
   type: "object",
 };
 
-export const option_trade= {
+export const option_trade = {
   description: "An option trade.",
   examples: [
     {
@@ -2557,7 +2549,7 @@ export const option_trade= {
   type: "object",
 };
 
-export const option_trades_resp= {
+export const option_trades_resp = {
   properties: {
     currency: { type: "string" },
     next_page_token: { $ref: "#/components/schemas/next_page_token" },
@@ -2573,7 +2565,7 @@ export const option_trades_resp= {
   type: "object",
 };
 
-export const partial_call= {
+export const partial_call = {
   description: "Partial call.",
   properties: {
     currency: { $ref: "#/components/schemas/currency" },
@@ -2598,27 +2590,26 @@ export const partial_call= {
   type: "object",
 };
 
-export const payable_date= {
+export const payable_date = {
   description:
     "The date when the corporate action benefit is paid or distributed.",
   format: "date",
   type: "string",
 };
 
-export const process_date= {
+export const process_date = {
   description: "The date when the corporate action is processed by Alpaca.",
   format: "date",
   type: "string",
 };
 
-export const record_date= {
-  description:
-    "The date shareholders must own shares to receive the benefit.",
+export const record_date = {
+  description: "The date shareholders must own shares to receive the benefit.",
   format: "date",
   type: "string",
 };
 
-export const redemption= {
+export const redemption = {
   description: "Redemption.",
   examples: [
     {
@@ -2644,7 +2635,7 @@ export const redemption= {
   type: "object",
 };
 
-export const region= {
+export const region = {
   default: "us",
   description:
     "The region to filter corporate actions by.\n\n- `us`: only US corporate actions\n- `non_us`: only non-US corporate actions\n- `all`: both US and non-US corporate actions\n",
@@ -2652,7 +2643,7 @@ export const region= {
   type: "string",
 };
 
-export const reorganization= {
+export const reorganization = {
   description: "Reorganization (cash and/or multiple stock allocations).",
   properties: {
     cash_rate: { format: "double", type: "number" },
@@ -2675,7 +2666,7 @@ export const reorganization= {
   type: "object",
 };
 
-export const reorganization_stock_movement= {
+export const reorganization_stock_movement = {
   description: "A stock allocation leg in a reorganization.",
   properties: {
     cusip: { type: "string" },
@@ -2688,7 +2679,7 @@ export const reorganization_stock_movement= {
   type: "object",
 };
 
-export const reverse_split= {
+export const reverse_split = {
   description: "Reverse split.",
   examples: [
     {
@@ -2736,7 +2727,7 @@ export const reverse_split= {
   type: "object",
 };
 
-export const rights_distribution= {
+export const rights_distribution = {
   description: "Rights distribution.",
   examples: [
     {
@@ -2783,14 +2774,14 @@ export const rights_distribution= {
   type: "object",
 };
 
-export const sort= {
+export const sort = {
   default: "asc",
   description: "Sort data in ascending or descending order.",
   enum: ["asc", "desc"],
   type: "string",
 };
 
-export const spin_off= {
+export const spin_off = {
   description: "Spin-off.",
   examples: [
     {
@@ -2839,7 +2830,7 @@ export const spin_off= {
   type: "object",
 };
 
-export const stock_and_cash_merger= {
+export const stock_and_cash_merger = {
   description: "Stock and cash merger.",
   examples: [
     {
@@ -2887,7 +2878,7 @@ export const stock_and_cash_merger= {
   type: "object",
 };
 
-export const stock_auction= {
+export const stock_auction = {
   description: "An auction\n",
   examples: [
     {
@@ -2924,9 +2915,9 @@ export const stock_auction= {
   type: "object",
 };
 
-export const stock_auction_feed= { default: "sip", type: "string" };
+export const stock_auction_feed = { default: "sip", type: "string" };
 
-export const stock_auctions_resp= {
+export const stock_auctions_resp = {
   properties: {
     auctions: {
       additionalProperties: {
@@ -2942,7 +2933,7 @@ export const stock_auctions_resp= {
   type: "object",
 };
 
-export const stock_auctions_resp_single= {
+export const stock_auctions_resp_single = {
   properties: {
     auctions: {
       items: { $ref: "#/components/schemas/stock_daily_auctions" },
@@ -2956,7 +2947,7 @@ export const stock_auctions_resp_single= {
   type: "object",
 };
 
-export const stock_bar= {
+export const stock_bar = {
   description: "OHLC aggregate of all the trades in a given interval.\n",
   examples: [
     {
@@ -3012,7 +3003,7 @@ export const stock_bar= {
   type: "object",
 };
 
-export const stock_bars_resp= {
+export const stock_bars_resp = {
   properties: {
     bars: {
       additionalProperties: {
@@ -3028,7 +3019,7 @@ export const stock_bars_resp= {
   type: "object",
 };
 
-export const stock_bars_resp_single= {
+export const stock_bars_resp_single = {
   properties: {
     bars: {
       items: { $ref: "#/components/schemas/stock_bar" },
@@ -3042,13 +3033,13 @@ export const stock_bars_resp_single= {
   type: "object",
 };
 
-export const stock_conditions= {
+export const stock_conditions = {
   additionalProperties: { type: "string" },
   examples: [{ "@": "Regular Sale", A: "Acquisition", B: "Bunched Trade" }],
   type: "object",
 };
 
-export const stock_daily_auctions= {
+export const stock_daily_auctions = {
   description: "Opening and closing auction prices for a given day.\n",
   properties: {
     c: {
@@ -3068,7 +3059,7 @@ export const stock_daily_auctions= {
   type: "object",
 };
 
-export const stock_dividend= {
+export const stock_dividend = {
   description: "Stock dividend.",
   examples: [
     {
@@ -3098,19 +3089,19 @@ export const stock_dividend= {
   type: "object",
 };
 
-export const stock_exchanges= {
+export const stock_exchanges = {
   additionalProperties: { type: "string" },
   examples: [{ N: "New York Stock Exchange", V: "IEX" }],
   type: "object",
 };
 
-export const stock_historical_feed= {
+export const stock_historical_feed = {
   default: "sip",
   enum: ["iex", "otc", "sip", "boats"],
   type: "string",
 };
 
-export const stock_latest_bars_resp= {
+export const stock_latest_bars_resp = {
   properties: {
     bars: {
       additionalProperties: {
@@ -3124,7 +3115,7 @@ export const stock_latest_bars_resp= {
   type: "object",
 };
 
-export const stock_latest_bars_resp_single= {
+export const stock_latest_bars_resp_single = {
   properties: {
     bar: { $ref: "#/components/schemas/stock_bar" },
     currency: { type: "string" },
@@ -3134,12 +3125,12 @@ export const stock_latest_bars_resp_single= {
   type: "object",
 };
 
-export const stock_latest_feed= {
+export const stock_latest_feed = {
   enum: ["delayed_sip", "iex", "otc", "sip", "boats", "overnight"],
   type: "string",
 };
 
-export const stock_latest_quotes_resp= {
+export const stock_latest_quotes_resp = {
   properties: {
     currency: { type: "string" },
     quotes: {
@@ -3153,7 +3144,7 @@ export const stock_latest_quotes_resp= {
   type: "object",
 };
 
-export const stock_latest_quotes_resp_single= {
+export const stock_latest_quotes_resp_single = {
   properties: {
     currency: { type: "string" },
     quote: { $ref: "#/components/schemas/stock_quote" },
@@ -3163,7 +3154,7 @@ export const stock_latest_quotes_resp_single= {
   type: "object",
 };
 
-export const stock_latest_trades_resp= {
+export const stock_latest_trades_resp = {
   properties: {
     currency: { type: "string" },
     trades: {
@@ -3177,7 +3168,7 @@ export const stock_latest_trades_resp= {
   type: "object",
 };
 
-export const stock_latest_trades_resp_single= {
+export const stock_latest_trades_resp_single = {
   properties: {
     currency: { type: "string" },
     symbol: { type: "string" },
@@ -3187,7 +3178,7 @@ export const stock_latest_trades_resp_single= {
   type: "object",
 };
 
-export const stock_merger= {
+export const stock_merger = {
   description: "Stock merger.",
   examples: [
     {
@@ -3232,7 +3223,7 @@ export const stock_merger= {
   type: "object",
 };
 
-export const stock_quote= {
+export const stock_quote = {
   description: "The best bid and ask information for a given security.",
   examples: [
     {
@@ -3254,8 +3245,7 @@ export const stock_quote= {
       type: "number",
     },
     as: {
-      description:
-        "Ask size in shares (round lots prior to November 3, 2025).",
+      description: "Ask size in shares (round lots prior to November 3, 2025).",
       format: "uint32",
       type: "integer",
     },
@@ -3270,8 +3260,7 @@ export const stock_quote= {
       type: "number",
     },
     bs: {
-      description:
-        "Bid size in shares (round lots prior to November 3, 2025).",
+      description: "Bid size in shares (round lots prior to November 3, 2025).",
       format: "uint32",
       type: "integer",
     },
@@ -3293,7 +3282,7 @@ export const stock_quote= {
   type: "object",
 };
 
-export const stock_quotes_resp= {
+export const stock_quotes_resp = {
   properties: {
     currency: { type: "string" },
     next_page_token: { $ref: "#/components/schemas/next_page_token" },
@@ -3309,7 +3298,7 @@ export const stock_quotes_resp= {
   type: "object",
 };
 
-export const stock_quotes_resp_single= {
+export const stock_quotes_resp_single = {
   properties: {
     currency: { type: "string" },
     next_page_token: { $ref: "#/components/schemas/next_page_token" },
@@ -3323,7 +3312,7 @@ export const stock_quotes_resp_single= {
   type: "object",
 };
 
-export const stock_snapshot= {
+export const stock_snapshot = {
   description:
     "A snapshot provides the latest trade, latest quote, latest minute bar, current daily bar and previous daily bar.\n",
   properties: {
@@ -3336,14 +3325,14 @@ export const stock_snapshot= {
   type: "object",
 };
 
-export const stock_snapshots_resp= {
+export const stock_snapshots_resp = {
   additionalProperties: {
     $ref: "#/components/schemas/stock_snapshot",
   },
   type: "object",
 };
 
-export const stock_snapshots_resp_single= {
+export const stock_snapshots_resp_single = {
   allOf: [
     {
       properties: {
@@ -3356,14 +3345,14 @@ export const stock_snapshots_resp_single= {
   ],
 };
 
-export const stock_tape= {
+export const stock_tape = {
   description:
     "- A: New York Stock Exchange\n- B: NYSE Arca, Bats, IEX and other regional exchanges\n- C: NASDAQ\n- N: Overnight\n- O: OTC\n",
   enum: ["A", "B", "C", "N", "O"],
   type: "string",
 };
 
-export const stock_trade= {
+export const stock_trade = {
   description: "A stock trade.",
   examples: [
     {
@@ -3415,7 +3404,7 @@ export const stock_trade= {
   type: "object",
 };
 
-export const stock_trades_resp= {
+export const stock_trades_resp = {
   properties: {
     currency: { type: "string" },
     next_page_token: { $ref: "#/components/schemas/next_page_token" },
@@ -3431,7 +3420,7 @@ export const stock_trades_resp= {
   type: "object",
 };
 
-export const stock_trades_resp_single= {
+export const stock_trades_resp_single = {
   properties: {
     currency: { type: "string" },
     next_page_token: { $ref: "#/components/schemas/next_page_token" },
@@ -3445,13 +3434,13 @@ export const stock_trades_resp_single= {
   type: "object",
 };
 
-export const timestamp= {
+export const timestamp = {
   description: "Timestamp in RFC-3339 format with nanosecond precision.",
   format: "date-time",
   type: "string",
 };
 
-export const unit_split= {
+export const unit_split = {
   description: "Unit split.",
   examples: [
     {
@@ -3505,7 +3494,7 @@ export const unit_split= {
   type: "object",
 };
 
-export const worthless_removal= {
+export const worthless_removal = {
   description: "Worthless removal.",
   examples: [
     {
@@ -3526,4 +3515,3 @@ export const worthless_removal= {
   required: ["id", "symbol", "cusip", "process_date"],
   type: "object",
 };
-
