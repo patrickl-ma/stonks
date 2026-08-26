@@ -11,6 +11,7 @@
     "dev:spa": "pnpm --filter spa dev",
     "dev:api": "pnpm --filter api dev",
     "db:up": "docker compose up -d postgres",
+    "db:add-alpaca-schema": "pnpm --filter @stonks/db db:add-alpaca-schema --",
     "db:migrate": "pnpm --filter @stonks/db db:migrate",
     "db:studio": "pnpm --filter @stonks/db db:studio",
     "dev": "pnpm --filter @stonks/db build && concurrently \"pnpm --filter marketing dev\" \"pnpm --filter spa dev\" \"pnpm --filter api dev\"",
