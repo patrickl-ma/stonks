@@ -1,22 +1,16 @@
-import { buildServer } from './server.js'
+import { Hono } from "hono";
+import { sql } from "drizzle-orm";
+import type { ApiEnv } from "./lib/api-env";
+import { databaseMiddleware } from "./middlewares/database-middleware";
 
-const start = async () => {
-  let server: Awaited<ReturnType<typeof buildServer>> | undefined
+const app = new Hono<ApiEnv>()
+  .get("/health", (c) => c.json({ status: "ok" }, 200))
+  .use("/api/*", databaseMiddleware)
+  .get("/api/health/database", async (c) => {
+    await c.var.db.execute(sql`select 1`);
+    return c.json({ database: "ok", status: "ok" }, 200);
+  });
 
-  try {
-    server = await buildServer()
-    const { PORT: port } = server.config
+app.get("/", (c) => c.json({ service: "api", status: "ok" }));
 
-    await server.listen({ port, host: '0.0.0.0' })
-    console.log(`API listening at http://localhost:${port}`)
-  } catch (err) {
-    if (server) {
-      server.log.error(err)
-    } else {
-      console.error(err)
-    }
-    process.exit(1)
-  }
-}
-
-void start()
+export default app;
