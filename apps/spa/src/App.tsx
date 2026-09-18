@@ -1,56 +1,24 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import "./App.css";
 import { authClient } from "./lib/auth";
 import {
   Anchor,
   Button,
   Center,
   Checkbox,
+  Collapse,
   Container,
+  Flex,
   Group,
   Paper,
   PasswordInput,
   Text,
   TextInput,
   Title,
+  Transition,
 } from "@mantine/core";
 
 type Mode = "sign-in" | "sign-up";
-
-export function AuthenticationImage() {
-  return (
-    <div>
-      <Paper>
-        <Title order={2}>Welcome back toStonks!</Title>
-        <TextInput
-          label="Email address"
-          placeholder="hello@gmail.com"
-          size="md"
-          radius="md"
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          mt="md"
-          size="md"
-          radius="md"
-        />
-        <Checkbox label="Keep me logged in" mt="xl" size="md" />
-        <Button fullWidth mt="xl" size="md" radius="md">
-          Login
-        </Button>
-
-        <Text ta="center" mt="md">
-          Don&apos;t have an account?{" "}
-          <Anchor href="#" fw={500} onClick={(event) => event.preventDefault()}>
-            Register
-          </Anchor>
-        </Text>
-      </Paper>
-    </div>
-  );
-}
 
 function App() {
   const { data: session, isPending, refetch } = authClient.useSession();
@@ -111,7 +79,7 @@ function App() {
 
   return (
     <Center>
-      <Container size={420} my={40}>
+      <Flex p="md" direction="column" gap="md" align="center">
         <Title ta="center">
           {mode === "sign-in" ? "Sign in" : "Create your account"}
         </Title>
@@ -127,67 +95,67 @@ function App() {
             ? "Need an account? Sign up"
             : "Already have an account? Sign in"}
         </Anchor>
-        <Paper withBorder shadow="sm" p={22} mt={30} radius="md">
+        <Paper shadow="md" p="md" radius="md">
           <form onSubmit={(event) => void submit(event)}>
-            {mode === "sign-up" && (
+            <Flex p="md" direction="column" gap="md" align="stretch">
+              <Collapse expanded={mode === "sign-up"}>
+                <TextInput
+                  label="Name"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  required
+                  autoComplete="name"
+                />
+              </Collapse>
               <TextInput
-                label="Name"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
+                label="Email"
+                placeholder="your-email-address@domain.com"
                 required
-                autoComplete="name"
-              />
-            )}
-            <TextInput
-              label="Email"
-              placeholder="your-email-address@domain.com"
-              required
-              radius="md"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              autoComplete="email"
-            />
-            <PasswordInput
-              type="password"
-              mt="md"
-              radius="md"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-              minLength={8}
-              autoComplete={
-                mode === "sign-in" ? "current-password" : "new-password"
-              }
-              label="Password"
-              placeholder="Your password"
-            />
-            {error && (
-              <p className="error" role="alert">
-                {error}
-              </p>
-            )}
-            <Group justify="space-between" mt="lg">
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                fullWidth
-                mt="xl"
                 radius="md"
-              >
-                {isSubmitting
-                  ? "Please wait…"
-                  : mode === "sign-in"
-                    ? "Sign in"
-                    : "Sign up"}
-              </Button>
-              <Checkbox label="Remember me" />
-              <Anchor component="button" size="sm">
-                Forgot password?
-              </Anchor>
-            </Group>
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                autoComplete="email"
+              />
+              <PasswordInput
+                type="password"
+                radius="md"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+                minLength={8}
+                autoComplete={
+                  mode === "sign-in" ? "current-password" : "new-password"
+                }
+                label="Password"
+                placeholder="Your password"
+              />
+              {error && (
+                <p className="error" role="alert">
+                  {error}
+                </p>
+              )}
+              <Group justify="space-between">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  fullWidth
+                  radius="md"
+                >
+                  {isSubmitting
+                    ? "Please wait…"
+                    : mode === "sign-in"
+                      ? "Sign in"
+                      : "Sign up"}
+                </Button>
+                <Checkbox label="Remember me" />
+                <Anchor component="button" size="sm">
+                  Forgot password?
+                </Anchor>
+              </Group>
+            </Flex>
           </form>
         </Paper>
-      </Container>
+      </Flex>
     </Center>
   );
 }
