@@ -12,7 +12,8 @@
   "hyperdrive": [
     {
       "binding": "HYPERDRIVE",
-      "id": "ca323f1618ba47e3905c8f02b7d88776"
+      "id": "ca323f1618ba47e3905c8f02b7d88776",
+      "localConnectionString": "postgresql://stonks:stonks@localhost:55432/stonks"
     }
   ],
   "vars": {

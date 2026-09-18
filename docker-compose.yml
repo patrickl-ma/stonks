@@ -8,7 +8,7 @@ services:
     ports:
       - "55432:5432"
     volumes:
-      - stonks-postgres-data:/var/lib/postgresql/data
+      - stonks-postgres-data:/var/lib/postgresql
 
 volumes:
   stonks-postgres-data:
