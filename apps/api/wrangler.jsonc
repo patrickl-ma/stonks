@@ -3,6 +3,9 @@
   "name": "api",
   "main": "src/index.ts",
   "compatibility_date": "2026-09-17",
+  "dev": {
+    "port": 3001
+  },
   "compatibility_flags": [
     "nodejs_compat"
   ],
@@ -12,6 +15,10 @@
       "id": "ca323f1618ba47e3905c8f02b7d88776"
     }
   ],
+  "vars": {
+    "BETTER_AUTH_URL": "http://localhost:3001",
+    "SPA_ORIGIN": "http://localhost:5173"
+  },
   // "vars": {
   //   "MY_VAR": "my-variable"
   // },
