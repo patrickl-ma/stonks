@@ -21,11 +21,26 @@ pnpm db:up
 pnpm db:migrate
 ```
 
-Start the Hono Worker API (available at http://localhost:8787):
+Start the Hono Worker API (available at http://localhost:3001):
 
 ```bash
 pnpm dev:api
 ```
+
+The API exposes application methods through one JSON-RPC 2.0 endpoint:
+
+```http
+POST /api/rpc
+Content-Type: application/json
+```
+
+Example request:
+
+```json
+{"jsonrpc":"2.0","id":1,"method":"health"}
+```
+
+`auth.getSession` is available on the same endpoint and uses the Better Auth session cookie. Better Auth's sign-in and sign-up protocol remains available under `/api/auth/*` for the existing client, and requires `BETTER_AUTH_SECRET` in the local `.env` or as a deployed Wrangler secret.
 
 Start the Astro marketing app (available at http://localhost:4321):
 
