@@ -97,7 +97,7 @@ function App() {
         </Anchor>
         <Paper shadow="md" p="md" radius="md">
           <form onSubmit={(event) => void submit(event)}>
-            <Flex p="md" direction="column" gap="md" align="stretch">
+            <Flex p="md" direction="column" gap="md" align="">
               <Collapse expanded={mode === "sign-up"}>
                 <TextInput
                   label="Name"
