@@ -12,6 +12,7 @@
   "dependencies": {
     "@stonks/contracts": "workspace:*",
     "better-auth": "^1.7.1",
+    "json-rpc-2.0": "^1.8.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
