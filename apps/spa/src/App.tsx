@@ -7,15 +7,12 @@ import {
   Center,
   Checkbox,
   Collapse,
-  Container,
   Flex,
   Group,
   Paper,
   PasswordInput,
-  Text,
   TextInput,
   Title,
-  Transition,
 } from "@mantine/core";
 
 type Mode = "sign-in" | "sign-up";
@@ -103,7 +100,8 @@ function App() {
                   label="Name"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
-                  required
+                  required={mode === "sign-up"}
+                  disabled={mode !== "sign-up"}
                   autoComplete="name"
                 />
               </Collapse>
